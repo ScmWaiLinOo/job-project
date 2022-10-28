@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CategoryExport;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Requests\ImportRequest;
-use App\Imports\CategoryImport;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
@@ -90,17 +86,5 @@ class CategoryController extends Controller
             "message" => "Deleted Successfully!",
             "data" => $category,
         ]);
-    }
-
-    public function export(Request $request)
-    {
-        return Excel::download(new CategoryExport($request->keyword), 'categories.xlsx');
-    }
-
-    public function import(ImportRequest $request)
-    {
-        Excel::import(new CategoryImport, request()->file('file'));
-
-        return response(200);
     }
 }
