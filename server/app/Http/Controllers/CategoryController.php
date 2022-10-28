@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -13,13 +12,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Category::select('id', 'name');
-        if ($request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-        $categories = $query->get();
+        $categories = Category::when(request('search'), function ($query) {
+            $query->where('name', 'like', '%' . request('search') . '%');
+        })->select('id', 'name')->get();
         return response()->json($categories);
     }
 

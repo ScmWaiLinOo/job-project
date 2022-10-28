@@ -18,13 +18,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Post::with('user')->with('categories');
-        if ($request->search) {
-            $query->where('posts.title', 'like', '%' . request()->input('search') . '%');
-        }
-        $posts = $query->get();
+        $posts = Post::when(request('search'), function ($query) {
+            $query->where('posts.title', 'like', '%' . request('search') . '%');
+        })->with('user')->with('categories')->get();
         return response()->json(PostResource::collection($posts));
     }
 
