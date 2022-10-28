@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class TestSeeder extends Seeder
 {
@@ -28,7 +28,7 @@ class TestSeeder extends Seeder
                 'user_id' => User::all()->random()->id,
                 'image' => fake()->imageUrl(640, 480),
                 'title' => fake()->sentence(),
-                'body' => fake()->paragraph()
+                'body' => fake()->paragraph(),
             ]);
             $post->categories()->sync([$x + 1, $x + 2]);
         }

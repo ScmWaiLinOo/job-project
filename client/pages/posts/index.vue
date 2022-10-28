@@ -7,73 +7,6 @@
             <i class="fa-sharp fa-solid fa-plus"></i> Create
           </button>
         </NuxtLink>
-        <button class="btn btn-sm btn-info ml-1" @click="exportExcel()">
-          <i class="fa-solid fa-file-arrow-down"></i> Export
-        </button>
-        <button
-          type="button"
-          class="btn btn-secondary btn-sm ml-1"
-          data-bs-toggle="modal"
-          data-bs-target="#importModal"
-          data-bs-whatever="@getbootstrap"
-        >
-          <i class="fa-solid fa-file-arrow-up"></i> Import
-        </button>
-        <div
-          class="modal fade"
-          id="importModal"
-          tabindex="-1"
-          aria-labelledby="importModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="importModalLabel">Import Posts</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  id="modal-close"
-                  @click="clearErrMsg()"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div
-                  class="alert alert-sm alert-warning alert-dismissible fade show"
-                  role="alert"
-                  v-if="errors != null"
-                >
-                  <small v-for="(error, index) in errors" :key="index" class="text-danger"
-                    >*{{ error[0] }}<br
-                  /></small>
-                  <button
-                    type="button"
-                    class="btn-close btn-sm"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <form id="import-form">
-                  <div class="mb-3">
-                    <label for="file" class="col-form-label">Choose excel file:</label>
-                    <input class="form-control" type="file" name="file" id="file" />
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  @click="importExcel()"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="col-3 d-flex justify-content-start">
         <div class="input-group input-group-sm mb-3">
@@ -232,45 +165,6 @@ export default {
     },
     search() {
       this.getAllPosts();
-    },
-    exportExcel() {
-      this.$axios
-        .$post(
-          "http://127.0.0.1:8000/api/posts/export",
-          { keyword: this.keyword },
-          { responseType: "arraybuffer" }
-        )
-        .then((response) => {
-          let fileURL = window.URL.createObjectURL(new Blob([response]));
-          let fileLink = document.createElement("a");
-          fileLink.href = fileURL;
-          fileLink.setAttribute("download", "posts.xlsx");
-          document.body.appendChild(fileLink);
-          fileLink.click();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    importExcel() {
-      let form = document.getElementById("import-form");
-      let formData = new FormData(form);
-      this.$axios
-        .$post("http://127.0.0.1:8000/api/posts/import", formData)
-        .then((res) => {
-          document.getElementById("modal-close").click();
-          form.reset();
-          this.getAllPosts();
-          Toast.fire({
-            icon: "success",
-            title: "Imported Successfully!",
-          });
-        })
-        .catch((err) => {
-          if (err.response.status == 422) {
-            this.errors = err.response.data.errors;
-          }
-        });
     },
     clearErrMsg() {
       this.errors = null;
