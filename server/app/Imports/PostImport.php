@@ -2,9 +2,9 @@
 
 namespace App\Imports;
 
-use App\Models\Post;
-use App\Models\Comment;
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -26,7 +26,7 @@ class PostImport implements ToCollection, WithHeadingRow, WithValidation
                     'user_id' => $row['user_id'],
                     'image' => $row['image'],
                     'title' => $row['title'],
-                    'body' => $row['body']
+                    'body' => $row['body'],
                 ]);
                 $categories_arr = explode(", ", $row['categories']);
                 $id_arr = Category::whereIn('name', $categories_arr)->pluck('id');
@@ -37,7 +37,7 @@ class PostImport implements ToCollection, WithHeadingRow, WithValidation
                     'user_id' => $row['user_id'],
                     'image' => $row['image'],
                     'title' => $row['title'],
-                    'body' => $row['body']
+                    'body' => $row['body'],
                 ]);
                 $categories_arr = explode(", ", $row['categories']);
                 $id_arr = Category::whereIn('name', $categories_arr)->pluck('id');
@@ -56,13 +56,13 @@ class PostImport implements ToCollection, WithHeadingRow, WithValidation
 
     public function rules(): array
     {
-        return  [
+        return [
             '*.user_id' => 'required',
             '*.image' => 'required',
             '*.title' => ['required', 'max:255'],
             '*.body' => 'required',
             '*.categories' => 'required',
-            '*.actions' => 'required'
+            '*.actions' => 'required',
         ];
     }
 }

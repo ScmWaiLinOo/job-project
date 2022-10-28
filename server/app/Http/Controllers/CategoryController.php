@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Exports\CategoryExport;
-use App\Imports\CategoryImport;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\ImportRequest;
+use App\Imports\CategoryImport;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
@@ -36,12 +36,12 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $category = Category::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         return response()->json([
             "message" => "success",
-            "data" => $category
+            "data" => $category,
         ]);
     }
 
@@ -55,7 +55,7 @@ class CategoryController extends Controller
     {
         return response([
             "message" => "success",
-            "data" => $category
+            "data" => $category,
         ]);
     }
 
@@ -69,11 +69,11 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $category)
     {
         $category->update([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
         return response([
             "message" => "success",
-            "data" => $category
+            "data" => $category,
         ]);
     }
 
@@ -88,7 +88,7 @@ class CategoryController extends Controller
         $category->delete();
         return response([
             "message" => "Deleted Successfully!",
-            "data" => $category
+            "data" => $category,
         ]);
     }
 

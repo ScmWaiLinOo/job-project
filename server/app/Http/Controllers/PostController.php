@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Models\Comment;
 use App\Exports\PostExport;
-use App\Imports\PostImport;
-use Illuminate\Http\Request;
-use App\Http\Requests\PostRequest;
 use App\Http\Requests\ImportRequest;
+use App\Http\Requests\PostRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Http\Resources\PostResource;
+use App\Imports\PostImport;
+use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\PostUpdateRequest;
 
 class PostController extends Controller
 {
@@ -48,12 +48,12 @@ class PostController extends Controller
             'user_id' => Auth::user()->id,
             'image' => $imageName,
             'title' => $request->title,
-            'body' => $request->body
+            'body' => $request->body,
         ]);
         $post->categories()->sync($request->categories);
         return response([
             'message' => 'success',
-            'data' => $post
+            'data' => $post,
         ]);
     }
 
@@ -99,7 +99,7 @@ class PostController extends Controller
 
         return response([
             'message' => 'Post Updated',
-            'data' => $post
+            'data' => $post,
         ]);
     }
 
@@ -123,7 +123,7 @@ class PostController extends Controller
         Comment::where('post_id', $post->id)->delete();
         $post->delete();
         return response([
-            'message' => 'Post deleted!'
+            'message' => 'Post deleted!',
         ]);
     }
 

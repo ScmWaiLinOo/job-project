@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
-use Illuminate\Auth\AuthenticationException;
 
 class AuthController extends Controller
 {
@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         return response([
             'message' => 'successfully logged in',
-            'token' => $token->plainTextToken
+            'token' => $token->plainTextToken,
         ]);
     }
 
@@ -60,7 +60,7 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return [
-            'message' => 'Successfully Logged out'
+            'message' => 'Successfully Logged out',
         ];
     }
 }

@@ -20,7 +20,7 @@ class CategoryImport implements ToCollection, WithHeadingRow, WithValidation
         foreach ($rows as $row) {
             if ($row['actions'] == 'create') {
                 Category::create([
-                    'name'     => $row['name']
+                    'name' => $row['name'],
                 ]);
             } else if ($row['actions'] == 'update') {
                 $category = Category::find($row['id']);
@@ -36,7 +36,7 @@ class CategoryImport implements ToCollection, WithHeadingRow, WithValidation
     {
         return [
             '*.name' => 'required',
-            '*.actions' => 'required'
+            '*.actions' => 'required',
         ];
     }
 }

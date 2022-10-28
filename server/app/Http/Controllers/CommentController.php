@@ -19,7 +19,7 @@ class CommentController extends Controller
         $comment = Comment::create([
             'user_id' => Auth::user()->id,
             'post_id' => $request->post_id,
-            'body' => $request->body
+            'body' => $request->body,
         ]);
 
         $comment = Comment::where('id', $comment->id)
@@ -28,7 +28,7 @@ class CommentController extends Controller
 
         return response([
             'message' => 'success',
-            'data' => $comment
+            'data' => $comment,
         ]);
     }
 
